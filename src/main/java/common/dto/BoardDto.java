@@ -18,13 +18,13 @@ public class BoardDto {
     @NotEmpty
     private String name;
     private String description;
-    private Set<User> users;
+    private List<String> users;
     @NotEmpty
     @NotNull
     private String ownerLogin;
 
     @Builder
-    public BoardDto(Long id, String name, String description, Set<User> users, String ownerLogin) {
+    public BoardDto(Long id, String name, String description, List<String> users, String ownerLogin) {
         this.id = id;
         this.name = name;
         this.description = description;

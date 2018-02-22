@@ -1,12 +1,15 @@
 package common.entities;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,11 +33,11 @@ public class User implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-   @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-  @JsonManagedReference
-   private Set<Board> ownedBoards = new HashSet<>();
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Board> ownedBoards = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
     @JsonManagedReference
-    private Set<Board> boards = new HashSet<>();
+    private List<Board> boards = new ArrayList<>();
 }

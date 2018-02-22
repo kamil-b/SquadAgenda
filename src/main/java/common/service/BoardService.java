@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -39,10 +41,14 @@ public class BoardService {
         return BoardDto.builder()
                 .id(board.getId())
                 .name(board.getName())
-               .ownerLogin(board.getOwner().getLogin())
+                .ownerLogin(board.getOwner().getLogin())
                 .description(board.getDescription())
-                .users(board.getUsers())
+                .users(getUsersNames(board.getUsers()))
                 .build();
+    }
+
+    private List<String> getUsersNames(List<User> users) {
+        return users.stream().map(User::getLogin).collect(Collectors.toList());
     }
 
 
