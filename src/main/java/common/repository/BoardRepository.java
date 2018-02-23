@@ -1,11 +1,11 @@
 package common.repository;
 
 import common.entities.Board;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface BoardRepository extends CrudRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Optional<Board> findById(Long id);
 }

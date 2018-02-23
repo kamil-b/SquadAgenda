@@ -22,7 +22,7 @@ public class BoardService {
     private BoardRepository boardRepository;
 
     public BoardDto createBoard(BoardDto boardDto) {
-        User user = userRepository.findByLogin(boardDto.getOwnerLogin()).orElseThrow(IllegalArgumentException::new);
+        User user = userRepository.findByUsername(boardDto.getOwnerLogin()).orElseThrow(IllegalArgumentException::new);
 
         Board board = new Board();
         board.setName(boardDto.getName());
@@ -41,14 +41,14 @@ public class BoardService {
         return BoardDto.builder()
                 .id(board.getId())
                 .name(board.getName())
-                .ownerLogin(board.getOwner().getLogin())
+                .ownerLogin(board.getOwner().getUsername())
                 .description(board.getDescription())
                 .users(getUsersNames(board.getUsers()))
                 .build();
     }
 
     private List<String> getUsersNames(List<User> users) {
-        return users.stream().map(User::getLogin).collect(Collectors.toList());
+        return users.stream().map(User::getUsername).collect(Collectors.toList());
     }
 
 

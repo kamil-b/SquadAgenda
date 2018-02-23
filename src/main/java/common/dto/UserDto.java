@@ -9,7 +9,7 @@ import java.util.List;
 public class UserDto {
 
     private Long id;
-    private String login;
+    private String username;
     private String password;
     private String email;
     private String role;
@@ -17,9 +17,9 @@ public class UserDto {
     private List<String> ownedBoards;
 
     @Builder
-    public UserDto(Long id, String login, String password, String email, String role, List<String> boards, List<String> ownedBoards) {
+    public UserDto(Long id, String username, String password, String email, String role, List<String> boards, List<String> ownedBoards) {
         this.id = id;
-        this.login = login;
+        this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
