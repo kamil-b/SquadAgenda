@@ -1,13 +1,11 @@
 package common.dto;
 
-import common.entities.User;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -32,7 +30,6 @@ public class BoardDto {
         this.ownerLogin = ownerLogin;
     }
 
-    public static class BoardDtoBuilder{
-
+    public static class BoardDtoBuilder {
     }
 }

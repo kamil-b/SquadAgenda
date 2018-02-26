@@ -28,6 +28,5 @@ public class UserDto {
     }
 
     public static class UserDtoBuilder {
-
     }
 }
