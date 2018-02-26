@@ -1,4 +1,4 @@
-package common.entities;
+package common.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;

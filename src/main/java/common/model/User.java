@@ -1,6 +1,7 @@
-package common.entities;
+package common.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import common.model.enums.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,6 +41,9 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
     @JsonManagedReference
     private List<Board> boards = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Event> events = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,8 +1,8 @@
 package common.service;
 
 import common.dto.BoardDto;
-import common.entities.Board;
-import common.entities.User;
+import common.model.Board;
+import common.model.User;
 import common.repository.BoardRepository;
 import common.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
 package common.dto;
 
+import common.model.Event;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,23 +11,20 @@ public class UserDto {
 
     private Long id;
     private String username;
-    private String password;
     private String email;
     private String role;
     private List<String> boards;
     private List<String> ownedBoards;
+    private List<EventDto> events;
 
     @Builder
-    public UserDto(Long id, String username, String password, String email, String role, List<String> boards, List<String> ownedBoards) {
+    public UserDto(Long id, String username, String email, String role, List<String> boards, List<String> ownedBoards, List<EventDto> events) {
         this.id = id;
         this.username = username;
-        this.password = password;
         this.email = email;
         this.role = role;
         this.boards = boards;
         this.ownedBoards = ownedBoards;
-    }
-
-    public static class UserDtoBuilder {
+        this.events = events;
     }
 }

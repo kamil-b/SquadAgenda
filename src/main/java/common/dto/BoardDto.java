@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-@Builder
 public class BoardDto {
 
     private Long id;
@@ -28,8 +27,5 @@ public class BoardDto {
         this.description = description;
         this.users = users;
         this.ownerLogin = ownerLogin;
-    }
-
-    public static class BoardDtoBuilder {
     }
 }
