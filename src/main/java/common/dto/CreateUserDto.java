@@ -18,6 +18,6 @@ public class CreateUserDto {
     @NotEmpty
     private String role;
     @NotEmpty
-    @Size(min = 5, max = 100)
+    @Size(min = 5, max = 255)
     private String password;
 }

@@ -28,7 +28,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Value("${oauth2.clientSecret}")
     private String clientSecret;
 
-
     @Autowired
     private AuthenticationManager authenticationManager;
 

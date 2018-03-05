@@ -50,6 +50,4 @@ public class BoardService {
     private List<String> getUsersNames(List<User> users) {
         return users.stream().map(User::getUsername).collect(Collectors.toList());
     }
-
-
 }
