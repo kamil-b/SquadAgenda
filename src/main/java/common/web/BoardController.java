@@ -16,7 +16,7 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<BoardDto> getBoardById(@Valid @PathVariable("id") Long id) {
+    public ResponseEntity<BoardDto> getBoardById(@Valid @PathVariable("id") String id) {
         return ResponseEntity.ok(boardService.findById(id));
     }
 

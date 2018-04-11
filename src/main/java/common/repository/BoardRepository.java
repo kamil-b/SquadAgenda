@@ -1,11 +1,11 @@
 package common.repository;
 
 import common.model.Board;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends MongoRepository<Board, String> {
 
-    Optional<Board> findById(Long id);
+    Optional<Board> findById(String id);
 }

@@ -9,14 +9,13 @@ import common.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class EventService {
 
     @Autowired
@@ -24,7 +23,6 @@ public class EventService {
 
     @Autowired
     private UserService userService;
-
 
     public List<EventDto> addEvents(List<CreateEventDto> createEventDtos) {
         return createEventDtos.stream().map(this::addEvent).collect(Collectors.toList());

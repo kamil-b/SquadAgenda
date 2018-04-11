@@ -8,12 +8,10 @@ import common.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class BoardService {
 
     @Autowired
@@ -32,7 +30,7 @@ public class BoardService {
         return buildBoardDto(boardRepository.save(board));
     }
 
-    public BoardDto findById(long id) {
+    public BoardDto findById(String id) {
         Board board = boardRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         return buildBoardDto(board);
     }

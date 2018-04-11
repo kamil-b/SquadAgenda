@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class BoardDto {
 
-    private Long id;
+    private String id;
     @NotNull
     @NotEmpty
     private String name;
@@ -21,7 +21,7 @@ public class BoardDto {
     private String ownerLogin;
 
     @Builder
-    public BoardDto(Long id, String name, String description, List<String> users, String ownerLogin) {
+    public BoardDto(String id, String name, String description, List<String> users, String ownerLogin) {
         this.id = id;
         this.name = name;
         this.description = description;
