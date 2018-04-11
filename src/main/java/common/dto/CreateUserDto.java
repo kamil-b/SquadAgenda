@@ -1,12 +1,14 @@
 package common.dto;
 
 import common.annotation.ValidEmail;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Size;
 
 @Data
+@Builder
 public class CreateUserDto {
 
     @NotEmpty

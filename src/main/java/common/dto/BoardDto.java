@@ -11,13 +11,11 @@ import java.util.List;
 public class BoardDto {
 
     private String id;
-    @NotNull
     @NotEmpty
     private String name;
     private String description;
     private List<String> users;
     @NotEmpty
-    @NotNull
     private String ownerLogin;
 
     @Builder
