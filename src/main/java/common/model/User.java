@@ -1,8 +1,7 @@
 package common.model;
 
 import common.model.enums.Role;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,11 +11,13 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 public class User implements UserDetails {
 
-    @Id
-    private String id;
+    @Id private String id;
     private String username;
     private String password;
     private String email;
