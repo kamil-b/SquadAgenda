@@ -1,17 +1,20 @@
 package common.repository;
 
 import common.model.User;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends ReactiveMongoRepository<User, String> {
 
-    Optional<User> findById(String id);
+    Mono<User> findById(String id);
 
-    Optional<User> findByUsername(String username);
+    Mono<UserDetails> findByUsername(String username);
 
-    Optional<User> findByEmail(String email);
+    Mono<User> findByEmail(String email);
 }
+
+
+//https://spring.io/blog/2016/11/28/going-reactive-with-spring-data

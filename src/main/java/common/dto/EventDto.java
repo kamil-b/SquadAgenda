@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 public class EventDto extends CreateEventDto {
 
-    private String id;
+    private  String id;
 
     @Builder
     public EventDto(String id, String type, Date date, String username) {

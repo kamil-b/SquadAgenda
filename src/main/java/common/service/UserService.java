@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,14 +32,13 @@ public class UserService implements UserDetailsService {
     @Autowired
     private EventService eventService;
 
-    public UserDto findById(String id) {
-        User user = userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-        return buildUserDto(user);
+    public Mono<UserDto> findById(String id) {
+        return userRepository.findById(id).map(this::buildUserDto);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    public Mono<UserDetails> loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
     }
 
     public UserDto registerNewUser(CreateUserDto createUserDto) {
@@ -52,7 +51,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(createUserDto.getPassword());
         user.setEmail(createUserDto.getEmail());
         user.setRole(Role.valueOf(createUserDto.getRole()));
-        User savedUser = userRepository.save(user);
+        Mono<User> savedUser = userRepository.save(user);
         return buildUserDto(savedUser);
     }
 

@@ -2,9 +2,8 @@ package common.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Data
