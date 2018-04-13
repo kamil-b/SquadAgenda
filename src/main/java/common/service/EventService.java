@@ -37,10 +37,10 @@ public class EventService {
         newEvent.setUser(user);
 
         removeIfExists(user.getEvents(), newEvent);
-        return buildEventDto(eventRepository.save(newEvent));
+        return buildEventDto(eventRepository.save(newEvent).block());
     }
 
-    EventDto buildEventDto(Event event) {
+    public static EventDto buildEventDto(Event event) {
         return EventDto.builder()
                 .id(event.getId())
                 .date(event.getDate())
