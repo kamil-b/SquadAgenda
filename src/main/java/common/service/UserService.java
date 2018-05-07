@@ -7,6 +7,7 @@ import common.model.Board;
 import common.model.Event;
 import common.model.User;
 import common.model.enums.Role;
+import common.repository.BoardRepository;
 import common.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,28 +28,14 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private EventService eventService;
-
-    public Mono<UserDto> findById(String id) {
-        return userRepository.findById(id).flatMap(UserService::buildUserDto);
-    }
+    private BoardRepository boardRepository;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return null;
     }
 
-    public Mono<UserDto> registerNewUser(CreateUserDto createUserDto) {
-        return Mono.just(createUserDto)
-                .flatMap(UserService::createUserEntity)
-                .flatMap(userRepository::save)
-                .flatMap(UserService::buildUserDto);
-    }
-
-    public static List<EventDto> buildEventsDtos(List<Event> events) {
+    private static List<EventDto> buildEventsDtos(List<Event> events) {
         return events.stream().map(EventService::buildEventDto).collect(Collectors.toList());
     }
 
@@ -55,7 +44,7 @@ public class UserService implements UserDetailsService {
     }
 
 
-    private static Mono<User> createUserEntity(CreateUserDto createUserDto) {
+    public static Mono<User> createUserEntity(CreateUserDto createUserDto) {
         User user = new User();
         user.setUsername(createUserDto.getUsername());
         user.setPassword(createUserDto.getPassword());
@@ -64,7 +53,7 @@ public class UserService implements UserDetailsService {
         return Mono.just(user);
     }
 
-    private static Mono<UserDto> buildUserDto(User user) {
+    public static Mono<UserDto> buildUserDto(User user) {
         return Mono.just(UserDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -74,5 +63,16 @@ public class UserService implements UserDetailsService {
                 .ownedBoards(getBoardsNames(user.getOwnedBoards()))
                 .events(buildEventsDtos(user.getEvents()))
                 .build());
+    }
+
+    public Mono<User> update(final @Valid UserDto userDto) {
+        User.builder()
+                .username(userDto.getUsername())
+                .email(userDto.getEmail())
+                .role(Role.valueOf(userDto.getRole()))
+                .boards(Flux.fromIterable(userDto.getBoards())
+                        .map(boardName -> boardRepository.findByName(boardName))
+                        .collectList())
+                .build();
     }
 }

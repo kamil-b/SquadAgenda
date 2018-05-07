@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 public class CreateUserDto {
 
     @NotEmpty
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 255)
     private String username;
     @NotEmpty
     @ValidEmail

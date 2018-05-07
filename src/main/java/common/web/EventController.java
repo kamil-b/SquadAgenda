@@ -19,14 +19,12 @@ public class EventController {
     private EventService eventService;
 
     @RequestMapping("/event/add")
-    public ResponseEntity<EventDto> addEvent(@Valid @RequestBody CreateEventDto createEventDto){
+    public ResponseEntity<EventDto> addEvent(@Valid @RequestBody CreateEventDto createEventDto) {
         return ResponseEntity.ok(eventService.addEvent(createEventDto));
     }
 
     @RequestMapping("/events/add")
-    public ResponseEntity<List<EventDto>> addEvents(@Valid @RequestBody List<CreateEventDto> createEventDtos){
+    public ResponseEntity<List<EventDto>> addEvents(@Valid @RequestBody List<CreateEventDto> createEventDtos) {
         return ResponseEntity.ok(eventService.addEvents(createEventDtos));
     }
-    
-
 }
