@@ -8,7 +8,6 @@ import common.model.Event;
 import common.model.User;
 import common.model.enums.Role;
 import common.repository.BoardRepository;
-import common.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,7 +64,7 @@ public class UserService implements UserDetailsService {
                 .build());
     }
 
-    public Mono<User> update(final @Valid UserDto userDto) {
+/*    public Mono<User> update(final @Valid UserDto userDto) {
         User.builder()
                 .username(userDto.getUsername())
                 .email(userDto.getEmail())
@@ -74,5 +73,5 @@ public class UserService implements UserDetailsService {
                         .map(boardName -> boardRepository.findByName(boardName))
                         .collectList())
                 .build();
-    }
+    }*/
 }
