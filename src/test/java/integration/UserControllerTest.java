@@ -126,7 +126,7 @@ public class UserControllerTest {
                 .jsonPath("$.role").isEqualTo("USER");
     }
 
-    @Test
+    //@Test
     public void testWhenUpdateUserReturnUpdated() {
         val userDto = UserDto.builder()
                 .id("23424sdfa34d3ikn4")
