@@ -1,1 +1,9 @@
 language: java
+
+  addons:
+    sonarcloud:
+      organization: "kamil-b-github"
+      token:
+        secure: 8bb57b62e8faebe65a28c2e198799afb8f074a26
+  script:
+    - mvn sonar:sonar
