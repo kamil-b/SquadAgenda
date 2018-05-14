@@ -14,10 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +39,6 @@ public class UserService implements UserDetailsService {
     private static List<String> getBoardsNames(List<Board> boards) {
         return boards.stream().map(Board::getName).collect(Collectors.toList());
     }
-
 
     public static Mono<User> createUserEntity(CreateUserDto createUserDto) {
         User user = new User();

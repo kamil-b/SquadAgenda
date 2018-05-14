@@ -48,8 +48,8 @@ public class UserController {
                 .map(user -> ResponseEntity.status(HttpStatus.ACCEPTED).body(user))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
-
-/*    @PutMapping(value = "")
+/*
+    @PutMapping(value = "")
     public Mono<ResponseEntity<UserDto>> updateUser(@Valid @RequestBody UserDto userDto) {
         return userRepository.findById(userDto.getId())
                 .flatMap(user -> UserService.update(user, userDto))
@@ -57,5 +57,6 @@ public class UserController {
                 .flatMap(UserService::buildUserDto)
                 .map(user -> ResponseEntity.status(HttpStatus.ACCEPTED).body(user))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
-    }*/
+    }
+    */
 }
