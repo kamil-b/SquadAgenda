@@ -8,8 +8,9 @@ import common.model.Event;
 import common.model.User;
 import common.model.enums.Role;
 import common.repository.BoardRepository;
+import common.repository.EventRepository;
+import common.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,13 +20,20 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service("userDetailsService")
 
 @Slf4j
+@Service("userDetailsService")
 public class UserService implements UserDetailsService {
 
-    @Autowired
+    private UserRepository userRepository;
     private BoardRepository boardRepository;
+    private EventRepository eventRepository;
+
+    public UserService(UserRepository userRepository, BoardRepository boardRepository, EventRepository eventRepository) {
+        this.userRepository = userRepository;
+        this.boardRepository = boardRepository;
+        this.eventRepository = eventRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -61,14 +69,35 @@ public class UserService implements UserDetailsService {
                 .build());
     }
 
-/*    public Mono<User> update(final @Valid UserDto userDto) {
-        User.builder()
-                .username(userDto.getUsername())
-                .email(userDto.getEmail())
-                .role(Role.valueOf(userDto.getRole()))
-                .boards(Flux.fromIterable(userDto.getBoards())
-                        .map(boardName -> boardRepository.findByName(boardName))
-                        .collectList())
-                .build();
-    }*/
+    public Mono<UserDto> update(UserDto userDto) {
+        List<Board> boards = userDto.getBoards()
+                .stream()
+                .map(name -> boardRepository.findByName(name).block())
+                .collect(Collectors.toList());
+
+        List<Board> ownedBoards = userDto.getBoards()
+                .stream()
+                .map(name -> boardRepository.findByName(name).block())
+                .collect(Collectors.toList());
+
+        List<Event> events = userDto.getEvents().stream()
+                .map(EventDto::getId)
+                .map(id -> eventRepository.findById(id).block())
+                .collect(Collectors.toList());
+
+        return userRepository.findById(userDto.getId())
+                .flatMap(user -> updateUserEntity(user, userDto, boards, ownedBoards, events))
+                .flatMap(updated -> userRepository.save(updated))
+                .flatMap(UserService::buildUserDto);
+    }
+
+    private static Mono<User> updateUserEntity(User user, UserDto dto, List<Board> boards, List<Board> ownedBoards, List<Event> events) {
+        user.setEmail(dto.getEmail());
+        user.setRole(Role.valueOf(dto.getRole()));
+        user.setUsername(dto.getUsername());
+        user.setEvents(events);
+        user.setBoards(boards);
+        user.setOwnedBoards(ownedBoards);
+        return Mono.just(user);
+    }
 }

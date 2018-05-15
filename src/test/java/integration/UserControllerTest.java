@@ -4,7 +4,10 @@ import common.dto.CreateUserDto;
 import common.dto.UserDto;
 import common.model.User;
 import common.model.enums.Role;
+import common.repository.BoardRepository;
+import common.repository.EventRepository;
 import common.repository.UserRepository;
+import common.service.UserService;
 import common.web.UserController;
 import lombok.val;
 import org.junit.Before;
@@ -21,16 +24,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
-
 public class UserControllerTest {
 
     private UserRepository userRepository;
     private WebTestClient webTestClient;
+    private BoardRepository boardRepository;
+    private EventRepository eventRepository;
+
 
     @Before
     public void setup() {
         userRepository = mock(UserRepository.class);
-        webTestClient = WebTestClient.bindToController(new UserController(userRepository))
+        boardRepository = mock(BoardRepository.class);
+        eventRepository = mock(EventRepository.class);
+        UserService userService = new UserService(userRepository, boardRepository, eventRepository);
+
+        webTestClient = WebTestClient.bindToController(new UserController(userRepository, boardRepository, userService))
                 .configureClient()
                 .baseUrl("/user")
                 .build();
@@ -126,12 +135,15 @@ public class UserControllerTest {
                 .jsonPath("$.role").isEqualTo("USER");
     }
 
-    //@Test
+    @Test
     public void testWhenUpdateUserReturnUpdated() {
         val userDto = UserDto.builder()
                 .id("23424sdfa34d3ikn4")
                 .username("tester")
                 .email("new@mail.com")
+                .boards(new ArrayList<>())
+                .ownedBoards(new ArrayList<>())
+                .events(new ArrayList<>())
                 .role("USER")
                 .build();
 
@@ -139,17 +151,19 @@ public class UserControllerTest {
                 .id(userDto.getId())
                 .email("old@mail.com")
                 .username("super_tester")
-                .role(Role.valueOf(userDto.getRole()))
-                //.boards(new ArrayList<>())
-                //.events(new ArrayList<>())
-                //.ownedBoards(new ArrayList<>())
+                .role(Role.ADMIN)
+                .boards(new ArrayList<>())
+                .events(new ArrayList<>())
+                .ownedBoards(new ArrayList<>())
                 .build();
 
         when(userRepository.findById(userDto.getId())).thenReturn(Mono.just(user));
         when(userRepository.delete(user)).thenReturn(Mono.empty());
-        when(userRepository.save(any())).thenReturn(Mono.just(user));
+        when(userRepository.save(user)).thenReturn(Mono.just(user));
+        when(boardRepository.findByName(anyString())).thenReturn(Mono.empty());
+        when(eventRepository.findById(anyString())).thenReturn(Mono.empty());
 
-        this.webTestClient.put().uri("/user")
+        this.webTestClient.put().uri("")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(fromObject(userDto))
@@ -158,6 +172,8 @@ public class UserControllerTest {
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBody()
                 .jsonPath("$.id").isEqualTo("23424sdfa34d3ikn4")
-                .jsonPath("$.username").isEqualTo("super_tester");
+                .jsonPath("$.username").isEqualTo("tester")
+                .jsonPath("$.email").isEqualTo("new@mail.com")
+                .jsonPath("$.role").isEqualTo("USER");
     }
 }

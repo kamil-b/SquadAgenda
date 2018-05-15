@@ -2,6 +2,7 @@ package common.web;
 
 import common.dto.CreateUserDto;
 import common.dto.UserDto;
+import common.repository.BoardRepository;
 import common.repository.UserRepository;
 import common.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,14 @@ import javax.validation.Valid;
 public class UserController {
 
     private UserRepository userRepository;
+    private BoardRepository boardRepository;
+    private UserService userService;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, BoardRepository boardRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.boardRepository = boardRepository;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/{id}")
@@ -48,15 +53,10 @@ public class UserController {
                 .map(user -> ResponseEntity.status(HttpStatus.ACCEPTED).body(user))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
-/*
+
     @PutMapping(value = "")
     public Mono<ResponseEntity<UserDto>> updateUser(@Valid @RequestBody UserDto userDto) {
-        return userRepository.findById(userDto.getId())
-                .flatMap(user -> UserService.update(user, userDto))
-                .flatMap(user -> userRepository.save(user))
-                .flatMap(UserService::buildUserDto)
-                .map(user -> ResponseEntity.status(HttpStatus.ACCEPTED).body(user))
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+        return userService.update(userDto)
+                .map(user -> ResponseEntity.status(HttpStatus.ACCEPTED).body(user));
     }
-    */
 }
