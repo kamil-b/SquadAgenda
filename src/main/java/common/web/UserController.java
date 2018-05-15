@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/userId")
 public class UserController {
 
     private UserRepository userRepository;

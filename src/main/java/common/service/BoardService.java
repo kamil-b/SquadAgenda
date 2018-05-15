@@ -6,7 +6,6 @@ import common.model.User;
 import common.repository.BoardRepository;
 import common.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -26,30 +25,32 @@ public class BoardService {
     }
 
 
-    public BoardDto createBoard(BoardDto boardDto) {
-        Mono<UserDetails> user = userRepository.findByUsername(boardDto.getOwnerLogin());
+    public Mono<BoardDto> createBoard(BoardDto boardDto) {
+        return userRepository.findByUsername(boardDto.getOwnerLogin())
+                .map(user -> Board.builder()
+                        .name(boardDto.getName())
+                        .description(boardDto.getDescription())
+                        .ownerId(((User) user).getId())
+                        .usersIds(boardDto.getUsers())
+                        .build())
+                .flatMap(boardRepository::save)
+                .flatMap(BoardService::buildBoardDto);
 
-        Board board = new Board();
-        board.setName(boardDto.getName());
-        board.setDescription(boardDto.getDescription());
-        board.setOwner((User) user.block());
-
-        return buildBoardDto(boardRepository.save(board).block());
     }
 
-    public BoardDto findById(String id) {
+    public Mono<BoardDto> findById(String id) {
         Board board = boardRepository.findById(id).block();
         return buildBoardDto(board);
     }
 
-    private BoardDto buildBoardDto(Board board) {
-        return BoardDto.builder()
+    private static Mono<BoardDto> buildBoardDto(Board board) {
+        return Mono.just(BoardDto.builder()
                 .id(board.getId())
                 .name(board.getName())
-                .ownerLogin(board.getOwner().getUsername())
+                .ownerLogin(board.getOwnerId())
                 .description(board.getDescription())
-                .users(getUsersNames(board.getUsers()))
-                .build();
+                .users(board.getUsersIds())
+                .build());
     }
 
     private List<String> getUsersNames(List<User> users) {

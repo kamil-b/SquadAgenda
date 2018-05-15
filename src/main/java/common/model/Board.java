@@ -1,5 +1,6 @@
 package common.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
@@ -9,13 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"owner", "users"})
+@Builder
 public class Board implements Serializable {
 
     @Id
     private String id;
     private String name;
-    private User owner;
+    private String ownerId;
     private String description;
-    private List<User> users = new ArrayList<>();
+    private List<String> usersIds;
 }

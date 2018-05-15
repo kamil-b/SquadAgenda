@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-@EqualsAndHashCode(exclude = "user")
 @Data
 public class Event {
 
@@ -16,6 +15,6 @@ public class Event {
     private EventType type;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
-    private User user;
+    private String userId;
 
 }

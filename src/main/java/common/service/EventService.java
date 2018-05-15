@@ -36,7 +36,7 @@ public class EventService {
         Event newEvent = new Event();
         newEvent.setType(EventType.valueOf(createEventDto.getType()));
         newEvent.setDate(createEventDto.getDate());
-        newEvent.setUser(user);
+        newEvent.setUserId(user.getId());
 
         removeIfExists(user.getEvents(), newEvent);
         return buildEventDto(eventRepository.save(newEvent).block());
@@ -47,7 +47,7 @@ public class EventService {
                 .id(event.getId())
                 .date(event.getDate())
                 .type(String.valueOf(event.getType()))
-                .username(event.getUser().getUsername())
+                .username(event.getUserId())
                 .build();
     }
 

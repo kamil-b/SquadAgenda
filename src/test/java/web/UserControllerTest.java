@@ -1,4 +1,4 @@
-package integration;
+package web;
 
 import common.dto.CreateUserDto;
 import common.dto.UserDto;
@@ -26,10 +26,10 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 
 public class UserControllerTest {
 
-    private UserRepository userRepository;
     private WebTestClient webTestClient;
     private BoardRepository boardRepository;
     private EventRepository eventRepository;
+    private UserRepository userRepository;
 
 
     @Before
@@ -41,7 +41,7 @@ public class UserControllerTest {
 
         webTestClient = WebTestClient.bindToController(new UserController(userRepository, userService))
                 .configureClient()
-                .baseUrl("/user")
+                .baseUrl("/userId")
                 .build();
     }
 
@@ -96,7 +96,7 @@ public class UserControllerTest {
 
         when(userRepository.findById(anyString())).thenReturn(Mono.just(user));
 
-        this.webTestClient.get().uri("/user" + user.getId())
+        this.webTestClient.get().uri("/userId" + user.getId())
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().isOk()
@@ -123,7 +123,7 @@ public class UserControllerTest {
         when(userRepository.findById(anyString())).thenReturn(Mono.just(user));
         when(userRepository.delete(any())).thenReturn(Mono.empty());
 
-        this.webTestClient.delete().uri("/user" + user.getId())
+        this.webTestClient.delete().uri("/userId" + user.getId())
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().is2xxSuccessful()

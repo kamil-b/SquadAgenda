@@ -23,9 +23,9 @@ public class User implements UserDetails {
     private String email;
     private boolean enabled;
     private Role role;
-    private List<Board> ownedBoards = new ArrayList<>();
-    private List<Board> boards = new ArrayList<>();
-    private List<Event> events = new ArrayList<>();
+    private List<String> ownedBoards = new ArrayList<>();
+    private List<String> boards = new ArrayList<>();
+    private List<String> events = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
