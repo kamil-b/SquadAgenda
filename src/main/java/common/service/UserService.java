@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
 @Service("userDetailsService")
 public class UserService implements UserDetailsService {
 
-    private UserRepository userRepository;
-    private BoardRepository boardRepository;
-    private EventRepository eventRepository;
+    private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
+    private final EventRepository eventRepository;
 
     public UserService(UserRepository userRepository, BoardRepository boardRepository, EventRepository eventRepository) {
         this.userRepository = userRepository;

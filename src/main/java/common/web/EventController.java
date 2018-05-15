@@ -15,8 +15,12 @@ import java.util.List;
 @RestController
 public class EventController {
 
+    private final EventService eventService;
+
     @Autowired
-    private EventService eventService;
+    public EventController(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     @RequestMapping("/event/add")
     public ResponseEntity<EventDto> addEvent(@Valid @RequestBody CreateEventDto createEventDto) {

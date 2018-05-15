@@ -12,8 +12,12 @@ import javax.validation.Valid;
 @RequestMapping(value = "/board")
 public class BoardController {
 
+    private final BoardService boardService;
+
     @Autowired
-    private BoardService boardService;
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
+    }
 
     @GetMapping(value = "{id}")
     public ResponseEntity<BoardDto> getBoardById(@Valid @PathVariable("id") String id) {

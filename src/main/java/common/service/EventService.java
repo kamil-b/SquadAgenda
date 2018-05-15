@@ -17,11 +17,14 @@ import java.util.stream.Collectors;
 @Service
 public class EventService {
 
-    @Autowired
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
+    private final UserService userService;
 
     @Autowired
-    private UserService userService;
+    public EventService(EventRepository eventRepository, UserService userService) {
+        this.eventRepository = eventRepository;
+        this.userService = userService;
+    }
 
     public List<EventDto> addEvents(List<CreateEventDto> createEventDtos) {
         return createEventDtos.stream().map(this::addEvent).collect(Collectors.toList());

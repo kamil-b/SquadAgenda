@@ -16,10 +16,15 @@ import java.util.stream.Collectors;
 @Service
 public class BoardService {
 
+    private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private BoardRepository boardRepository;
+    public BoardService(UserRepository userRepository, BoardRepository boardRepository) {
+        this.userRepository = userRepository;
+        this.boardRepository = boardRepository;
+    }
+
 
     public BoardDto createBoard(BoardDto boardDto) {
         Mono<UserDetails> user = userRepository.findByUsername(boardDto.getOwnerLogin());

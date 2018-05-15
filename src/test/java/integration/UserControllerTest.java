@@ -39,7 +39,7 @@ public class UserControllerTest {
         eventRepository = mock(EventRepository.class);
         UserService userService = new UserService(userRepository, boardRepository, eventRepository);
 
-        webTestClient = WebTestClient.bindToController(new UserController(userRepository, boardRepository, userService))
+        webTestClient = WebTestClient.bindToController(new UserController(userRepository, userService))
                 .configureClient()
                 .baseUrl("/user")
                 .build();

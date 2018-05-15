@@ -18,13 +18,11 @@ import javax.validation.Valid;
 public class UserController {
 
     private UserRepository userRepository;
-    private BoardRepository boardRepository;
     private UserService userService;
 
     @Autowired
-    public UserController(UserRepository userRepository, BoardRepository boardRepository, UserService userService) {
+    public UserController(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
-        this.boardRepository = boardRepository;
         this.userService = userService;
     }
 
